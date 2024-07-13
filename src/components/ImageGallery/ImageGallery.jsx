@@ -1,4 +1,4 @@
-// import styles from "./ImageGallery.modul.css";
+// import styles from "./ImageGallery.module.css";
 // import ImageCard from "../ImageCard/ImageCard";
 
 // function ImageGallery({ images }) {
