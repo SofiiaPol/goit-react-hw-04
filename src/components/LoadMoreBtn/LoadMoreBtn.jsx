@@ -1,5 +1,5 @@
-import styles from "./LoadMoreBtn.modul.css";
+// import styles from "./LoadMoreBtn.modul.css";
 
-function LoadMoreBtn() {}
+// function LoadMoreBtn() {}
 
-export default LoadMoreBtn;
+// export default LoadMoreBtn;

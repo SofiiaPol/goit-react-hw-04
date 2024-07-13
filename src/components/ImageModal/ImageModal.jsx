@@ -1,5 +1,5 @@
-import styles from "./ImageModal.module.css";
+// import styles from "./ImageModal.module.css";
 
-function ImageModal() {}
+// function ImageModal() {}
 
-export default ImageModal;
+// export default ImageModal;
