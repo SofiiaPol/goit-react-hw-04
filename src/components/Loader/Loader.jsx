@@ -1,11 +1,18 @@
-// import styles from "./Loader.module.css";
-// import { Oval } from "react-loader-spinner";
-// import styles from "./Loader.module.css";
+import { Grid } from "react-loader-spinner";
+import styles from "./Loader.module.css";
 
-// const Loader = () => (
-//   <div className={styles.loader}>
-//     <Oval height={80} width={80} color="grey" ariaLabel="loading" />
-//   </div>
-// );
+const Loader = () => {
+  return (
+    <div className={styles.Loader}>
+      <Grid
+        height="40"
+        width="40"
+        radius="10"
+        color="blue"
+        ariaLabel="loading"
+      />
+    </div>
+  );
+};
 
-// export default Loader;
+export default Loader;

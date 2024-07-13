@@ -1,11 +1,15 @@
-// import styles from "./ImageCard.module.css";
+import styles from "./ImageCard.module.css";
 
-// function ImageCard({ image }) {
-//   return (
-//     <div className={styles.card}>
-//       <img src={image.urls.small} alt={image.alt_description} />
-//     </div>
-//   );
-// }
+const ImageCard = ({ image }) => {
+  return (
+    <div>
+      <img
+        src={image.urls.small}
+        alt={image.alt_description}
+        // likes={image.likes}
+      />
+    </div>
+  );
+};
 
-// export default ImageCard;
+export default ImageCard;

@@ -1,25 +1,34 @@
 import "./App.css";
-// import { useState } from "react";
-import axios from "axios";
-// import toast, { Toaster } from "react-hot-toast";
+import { useState } from "react";
+// import axios from "axios";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
-// import Loader from "./components/Loader/Loader";
+import { createContext } from "react";
+import { searchImages } from "./api/unsplashApi";
+import Loader from "./components/Loader/Loader";
 // import styles from "./App.module.css";
 
-// const BASE_URL = "https://api.unsplash.com/";
-// const PARAMS = {
-//   key: "ZzTwiQ7oQoHLmWKR8dN2NaH-uHb94Zqp2oAVk06x040",
-// };
+export const AppContext = createContext();
 
-function App() {
+const App = () => {
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSearchSubmit = async (query) => {
+    setIsLoading(true);
+    const response = await searchImages(query, 1, 15);
+    console.log(response);
+    setGalleryImages(response.results);
+  };
+
   return (
-    <div>
-      <SearchBar />
-      <ImageGallery />
-    </div>
+    <AppContext.Provider value={{ setGalleryImages }}>
+      <SearchBar onSubmit={onSearchSubmit} />
+      <Loader />
+      {galleryImages.length !== 0 && <ImageGallery images={galleryImages} />}
+    </AppContext.Provider>
   );
-}
+};
 
 export default App;
 
