@@ -3,7 +3,7 @@ import "./App.css";
 import axios from "axios";
 // import toast, { Toaster } from "react-hot-toast";
 import SearchBar from "./components/SearchBar/SearchBar";
-// import ImageGallery from "./components/ImageGallery/ImageGallery";
+import ImageGallery from "./components/ImageGallery/ImageGallery";
 // import Loader from "./components/Loader/Loader";
 // import styles from "./App.module.css";
 
@@ -13,7 +13,12 @@ import SearchBar from "./components/SearchBar/SearchBar";
 // };
 
 function App() {
-  return <SearchBar />;
+  return (
+    <div>
+      <SearchBar />
+      <ImageGallery />
+    </div>
+  );
 }
 
 export default App;
