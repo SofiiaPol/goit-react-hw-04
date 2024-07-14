@@ -1,5 +1,11 @@
-// import styles from "./LoadMoreBtn.module.css";
+import styles from "./LoadMoreBtn.module.css";
 
-// function LoadMoreBtn() {}
+const LoadMoreBtn = ({ onClick }) => {
+  return (
+    <div>
+      <button onClick={onClick}>Load More</button>
+    </div>
+  );
+};
 
-// export default LoadMoreBtn;
+export default LoadMoreBtn;

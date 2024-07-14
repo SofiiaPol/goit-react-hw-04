@@ -22,7 +22,6 @@ export const searchImages = async (searchQuery, page = 1, perPage = 15) => {
   )}`;
   try {
     const response = await axios.get(url);
-    console.log(response);
     return response.data;
   } catch (error) {
     throw new Error(error.response ? error.response.status : error.message);
