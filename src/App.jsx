@@ -14,6 +14,18 @@ export const AppContext = createContext();
 
 Modal.setAppElement("#root");
 
+const modalStyles = {
+  content: {
+    border: "2px solid rgb(166, 105, 224)",
+    padding: "0",
+    // owerlay: "hidden",
+    // objectFit: "cover",
+    maxWidth: "1000px",
+    margin: "0 auto",
+    scrollbarsWidth: "none",
+  },
+};
+
 const App = () => {
   const [galleryImages, setGalleryImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,7 +87,11 @@ const App = () => {
       {galleryImages.length !== 0 && !isLoading && (
         <LoadMoreBtn onClick={onLoadMore} />
       )}
-      <Modal isOpen={isModalOpen} onRequestClose={closeModal}>
+      <Modal
+        style={modalStyles}
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+      >
         <ImageModal image={selectedImage} />
       </Modal>
     </AppContext.Provider>
