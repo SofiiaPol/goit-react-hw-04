@@ -21,8 +21,10 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [query, setQuery] = useState("");
 
   const onSearchSubmit = async (query) => {
+    setQuery(query);
     setIsLoading(true);
     setError(null);
     setPage(1);
@@ -65,19 +67,17 @@ const App = () => {
       {isLoading && <Loader />}
       {error ? (
         <ErrorMessage message={error} />
+      ) : galleryImages.length === 0 ? (
+        query.length !== 0 && <p> There is no image</p>
       ) : (
-        galleryImages.length !== 0 && (
-          <ImageGallery images={galleryImages} onImageClick={openModal} />
-        )
+        <ImageGallery images={galleryImages} onImageClick={openModal} />
       )}
       {galleryImages.length !== 0 && !isLoading && (
         <LoadMoreBtn onClick={onLoadMore} />
       )}
-      <ImageModal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        image={selectedImage}
-      />
+      <Modal isOpen={isModalOpen} onRequestClose={closeModal}>
+        <ImageModal image={selectedImage} />
+      </Modal>
     </AppContext.Provider>
   );
 };

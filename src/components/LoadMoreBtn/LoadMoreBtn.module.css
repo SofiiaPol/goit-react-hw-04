@@ -1,0 +1,9 @@
+.loadMoreBtn {
+  background-color: blueviolet;
+  color: #f0f0f0;
+  transition: backgraund-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loadMoreBtn:hover {
+  background-color: rgb(166, 105, 224);
+}

@@ -1,4 +1,14 @@
+ul,
+ol {
+  list-style-type: none;
+}
+
 .gallery {
   display: flex;
   flex-wrap: wrap;
+}
+
+.galleryItem {
+  width: calc((100% - 40px) / 3);
+  overflow: hidden;
 }
