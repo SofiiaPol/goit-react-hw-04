@@ -1,7 +1,6 @@
 import styles from "./ImageCard.module.css";
 
 const ImageCard = ({ image }) => {
-  console.log(image);
   return (
     <div className={styles.container}>
       <div className={styles.imgContainer}>

@@ -8,30 +8,14 @@ import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
-import Modal from "react-modal";
 
 export const AppContext = createContext();
-
-Modal.setAppElement("#root");
-
-const modalStyles = {
-  content: {
-    border: "2px solid rgb(166, 105, 224)",
-    padding: "0",
-    // owerlay: "hidden",
-    // objectFit: "cover",
-    maxWidth: "1000px",
-    margin: "0 auto",
-    scrollbarsWidth: "none",
-  },
-};
 
 const App = () => {
   const [galleryImages, setGalleryImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [query, setQuery] = useState("");
 
@@ -63,18 +47,8 @@ const App = () => {
     setIsLoading(false);
   };
 
-  const openModal = (image) => {
-    setSelectedImage(image);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedImage(null);
-  };
-
   return (
-    <AppContext.Provider value={{ setGalleryImages }}>
+    <AppContext.Provider value={{ selectedImage, setSelectedImage }}>
       <SearchBar onSubmit={onSearchSubmit} />
       {isLoading && <Loader />}
       {error ? (
@@ -82,18 +56,12 @@ const App = () => {
       ) : galleryImages.length === 0 ? (
         query.length !== 0 && <p> There is no image</p>
       ) : (
-        <ImageGallery images={galleryImages} onImageClick={openModal} />
+        <ImageGallery images={galleryImages} />
       )}
       {galleryImages.length !== 0 && !isLoading && (
         <LoadMoreBtn onClick={onLoadMore} />
       )}
-      <Modal
-        style={modalStyles}
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-      >
-        <ImageModal image={selectedImage} />
-      </Modal>
+      {selectedImage && <ImageModal />}
     </AppContext.Provider>
   );
 };

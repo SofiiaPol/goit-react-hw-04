@@ -1,10 +1,14 @@
 import styles from "./ImageGallery.module.css";
 import ImageCard from "../ImageCard/ImageCard";
+import { useContext } from "react";
+import { AppContext } from "../../App";
 
-const ImageGallery = ({ images, onImageClick }) => {
+const ImageGallery = ({ images }) => {
   const handleImageClick = (img) => {
-    onImageClick(img);
+    setSelectedImage(img);
   };
+
+  const { setSelectedImage } = useContext(AppContext);
 
   return (
     <ul className={styles.gallery}>
