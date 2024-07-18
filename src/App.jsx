@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import { createContext } from "react";
@@ -10,6 +10,7 @@ import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
 
 export const AppContext = createContext();
+const PAGE_LIMIT = 3;
 
 const App = () => {
   const [galleryImages, setGalleryImages] = useState([]);
@@ -18,34 +19,50 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
   const [query, setQuery] = useState("");
+  const [loadMore, setLoadMore] = useState(false);
 
-  const onSearchSubmit = async (query) => {
-    setQuery(query);
-    setIsLoading(true);
-    setError(null);
-    setPage(1);
-    try {
-      const response = await searchImages(query, 1, 15);
-      setGalleryImages(response.results);
-    } catch (err) {
-      setError("something went wrong, pls try again");
+  useEffect(() => {
+    const getImages = async () => {
+      setIsLoading(true);
+      try {
+        const response = await searchImages(query, page, PAGE_LIMIT);
+        console.log(response);
+        const resultImages = (prevImages) => {
+          return [...prevImages, ...response.results];
+        };
+        const total = 2000;
+        setGalleryImages(resultImages);
+        setLoadMore(page < Math.ceil(total / PAGE_LIMIT));
+      } catch (err) {
+        setError("something went wrong, pls try again");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  }, [query, page]);
+
+  const onSearchSubmit = async (searchQuery) => {
+    if (searchQuery !== query) {
+      setGalleryImages([]);
+      setPage(1);
+      setQuery(searchQuery);
     }
-    setIsLoading(false);
+    // setError(null);
   };
 
-  const onLoadMore = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const newPage = page + 1;
-      const response = await searchImages(query, newPage, 15);
-      setGalleryImages((prevImages) => [...prevImages, ...response.results]);
-      setPage(newPage);
-    } catch (err) {
-      setError("something went wrong, pls try again");
-    }
-    setIsLoading(false);
-  };
+  // const onLoadMore = async () => {
+  //   setIsLoading(true);
+  //   setError(null);
+  //   try {
+  //     const newPage = page + 1;
+  //     const response = await searchImages(query, newPage, 3);
+  //     setGalleryImages((prevImages) => [...prevImages, ...response.results]);
+  //     setPage(newPage);
+  //   } catch (err) {
+  //     setError("something went wrong, pls try again");
+  //   }
+  //   setIsLoading(false);
+  // };
 
   return (
     <AppContext.Provider value={{ selectedImage, setSelectedImage }}>
@@ -58,9 +75,7 @@ const App = () => {
       ) : (
         <ImageGallery images={galleryImages} />
       )}
-      {galleryImages.length !== 0 && !isLoading && (
-        <LoadMoreBtn onClick={onLoadMore} />
-      )}
+      {loadMore && <LoadMoreBtn page={page} setPage={setPage} />}
       {selectedImage && <ImageModal />}
     </AppContext.Provider>
   );
