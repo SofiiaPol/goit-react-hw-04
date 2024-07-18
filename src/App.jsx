@@ -10,7 +10,7 @@ import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
 
 export const AppContext = createContext();
-const PAGE_LIMIT = 3;
+const PAGE_LIMIT = 15;
 
 const App = () => {
   const [galleryImages, setGalleryImages] = useState([]);
@@ -30,19 +30,23 @@ const App = () => {
         const resultImages = (prevImages) => {
           return [...prevImages, ...response.results];
         };
-        const total = 2000;
         setGalleryImages(resultImages);
-        setLoadMore(page < Math.ceil(total / PAGE_LIMIT));
+        setLoadMore(page < response.total_pages);
       } catch (err) {
         setError("something went wrong, pls try again");
       } finally {
         setIsLoading(false);
       }
     };
+    if (query) {
+      getImages(query, page);
+    }
   }, [query, page]);
 
   const onSearchSubmit = async (searchQuery) => {
     if (searchQuery !== query) {
+      console.log("query", query);
+      console.log("searchQuery", searchQuery);
       setGalleryImages([]);
       setPage(1);
       setQuery(searchQuery);
@@ -68,10 +72,15 @@ const App = () => {
     <AppContext.Provider value={{ selectedImage, setSelectedImage }}>
       <SearchBar onSubmit={onSearchSubmit} />
       {isLoading && <Loader />}
-      {error ? (
+      {/* {error ? (
         <ErrorMessage message={error} />
       ) : galleryImages.length === 0 ? (
         query.length !== 0 && <p> There is no image</p>
+      ) : (
+        <ImageGallery images={galleryImages} />
+      )} */}
+      {error ? (
+        <ErrorMessage message={error} />
       ) : (
         <ImageGallery images={galleryImages} />
       )}
