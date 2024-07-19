@@ -20,6 +20,7 @@ const App = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [query, setQuery] = useState("");
   const [loadMore, setLoadMore] = useState(false);
+  const [emptyResults, setEmptyResults] = useState(false);
 
   useEffect(() => {
     const getImages = async () => {
@@ -27,11 +28,13 @@ const App = () => {
       try {
         const response = await searchImages(query, page, PAGE_LIMIT);
         console.log(response);
+        setEmptyResults(response.results.length === 0);
         const resultImages = (prevImages) => {
           return [...prevImages, ...response.results];
         };
         setGalleryImages(resultImages);
         setLoadMore(page < response.total_pages);
+        setError(null);
       } catch (err) {
         setError("something went wrong, pls try again");
       } finally {
@@ -51,39 +54,15 @@ const App = () => {
       setPage(1);
       setQuery(searchQuery);
     }
-    // setError(null);
   };
-
-  // const onLoadMore = async () => {
-  //   setIsLoading(true);
-  //   setError(null);
-  //   try {
-  //     const newPage = page + 1;
-  //     const response = await searchImages(query, newPage, 3);
-  //     setGalleryImages((prevImages) => [...prevImages, ...response.results]);
-  //     setPage(newPage);
-  //   } catch (err) {
-  //     setError("something went wrong, pls try again");
-  //   }
-  //   setIsLoading(false);
-  // };
 
   return (
     <AppContext.Provider value={{ selectedImage, setSelectedImage }}>
       <SearchBar onSubmit={onSearchSubmit} />
+      {error && <ErrorMessage message={error} />}
+      {galleryImages.length !== 0 && <ImageGallery images={galleryImages} />}
+      {emptyResults && <p>Images not found</p>}
       {isLoading && <Loader />}
-      {/* {error ? (
-        <ErrorMessage message={error} />
-      ) : galleryImages.length === 0 ? (
-        query.length !== 0 && <p> There is no image</p>
-      ) : (
-        <ImageGallery images={galleryImages} />
-      )} */}
-      {error ? (
-        <ErrorMessage message={error} />
-      ) : (
-        <ImageGallery images={galleryImages} />
-      )}
       {loadMore && <LoadMoreBtn page={page} setPage={setPage} />}
       {selectedImage && <ImageModal />}
     </AppContext.Provider>
