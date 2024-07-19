@@ -27,7 +27,6 @@ const App = () => {
       setIsLoading(true);
       try {
         const response = await searchImages(query, page, PAGE_LIMIT);
-        console.log(response);
         setEmptyResults(response.results.length === 0);
         const resultImages = (prevImages) => {
           return [...prevImages, ...response.results];
@@ -48,8 +47,6 @@ const App = () => {
 
   const onSearchSubmit = async (searchQuery) => {
     if (searchQuery !== query) {
-      console.log("query", query);
-      console.log("searchQuery", searchQuery);
       setGalleryImages([]);
       setPage(1);
       setQuery(searchQuery);

@@ -11,7 +11,6 @@ const SearchBar = ({ onSubmit }) => {
       toast.error("Please enter a search query");
       return;
     }
-    console.log("click submit");
     onSubmit(query);
   };
 
